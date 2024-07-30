@@ -101,3 +101,20 @@ print(circles)
 
 # close all open windows
 cv2.destroyAllWindows()
+
+# This command is to flow the mask of your selected ROIs
+import matplotlib.pyplot as plt
+
+# crop the circles from the image
+mask = np.zeros_like(clone)
+ROIs = []
+for i, circle in enumerate(circles):
+    mask = np.zeros_like(clone)
+    ROIs.append(cv2.circle(mask, circle[0], circle[1], i+1, -1))
+    Seg=np.sum(ROIs,0)
+    cropped = cv2.bitwise_and(clone, mask)
+    x, y, r = circle[0][0], circle[0][1], circle[1]
+    cropped = cropped[y-r:y+r, x-r:x+r]
+    
+    plt.imshow(Seg[:,:,0],'gray')
+
